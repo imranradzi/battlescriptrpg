@@ -1,3 +1,5 @@
+import random
+
 from gameclass.playerclass import player
 
 
@@ -11,7 +13,9 @@ while running == 0:
     player1.actions()
     actioninput = input("choose action\n")
     if int(actioninput) == 1:
-        enemy1.dmgreceive(player1.dmg)
+        player1damage = random.randrange(0.9 * player1.dmg, 1.1 * player1.dmg)          # generate damage 0.9 - 1.1 of our player's 
+        enemy1.dmgreceive(player1damage)                                                # base damage
+        print("player1 dealt", player1damage, "damage")
         if enemy1.hp == 0:
             print("you won")
             break                               # code stops when enemy1 reaches 0 hp first
