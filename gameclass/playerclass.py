@@ -12,10 +12,12 @@ class player:
         self.skills = skills        # we'll use a list/dictionary to store skills
 
     def statsbar(self):
+        # function to print out name, hp and mp of whichever player
         print(str(self.name) + "| HP:", str(self.hp) + "/" + str(self.maxhp), "| MP:",
               str(self.mp) + "/" + str(self.maxmp) +"\n")
 
     def actions(self):
+        # prints out list of actions player can do
         print("actions:\n 1. attack\n 2. do nothing")
 
     def dmgreceive(self, damagetaken):
