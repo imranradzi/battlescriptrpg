@@ -25,6 +25,16 @@ class player:
         if self.hp < 0:
             self.hp = 0
             
+    def dmgheal(self, damageheal):
+        self.hp += damageheal
+        if self.hp > self.maxhp:
+            self.hp = self.maxhp
+
+    def manalose(self, manaloss):
+        self.mp -= manaloss
+        if self.mp < 0:
+            self.mp = 0
+            
     def skillindex(self):
         for skill in self.skills:
             print(str((self.skills.index(skill) + 1)) + ':', skill['name'])
