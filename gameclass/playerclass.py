@@ -18,7 +18,7 @@ class player:
 
     def actions(self):
         # prints out list of actions player can do
-        print("actions:\n 1. attack\n 2. do nothing")
+        print("actions:\n 1. attack\n 2. skills\n 3. do nothing")
 
     def dmgreceive(self, damagetaken):
         self.hp -= damagetaken
@@ -26,6 +26,6 @@ class player:
             self.hp = 0
             
     def skillindex(self):
-        for skill in skills:
-            print((skills.index(skill) + 1) + ':', skill['name']
+        for skill in self.skills:
+            print(str((self.skills.index(skill) + 1)) + ':', skill['name'])
 
