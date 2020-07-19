@@ -25,14 +25,22 @@ while running == 0:
             playerdamage = random.randrange(0.9 * player.dmg, 1.1 * player.dmg)          # generate damage 0.9 - 1.1 of our player's 
             enemy1.dmgreceive(playerdamage)                                                # base damage
             print('player1 dealt', playerdamage, 'damage')
-            if enemy1.hp == 0:
-                print('you won')
-                running = 1                              # code stops when enemy1 reaches 0 hp first
         elif int(actioninput) == 2:
             player.skillindex()
-            skillinput = int(input('choose skill')) - 1
-            enemy1.dmgreceive(player.skills[skillinput]['dmg'])
-            print("player1 dealt", player.skills[skillinput]['dmg'], 'damage')
+            skillinput = int(input('choose skill\n')) - 1
+            for i in player.skills:
+                runnableskills = 0 # counter of how many skills we can do considering our mp
+                if player.mp > i['mpcost']:
+                    runnableskills += 1
+            if runnableskills > 0:
+                player.manalose(player.skills[skillinput]['mpcost'])
+                enemy1.dmgreceive(player.skills[skillinput]['dmg'])
+                print('player1 dealt', player.skills[skillinput]['dmg'], 'damage')
+            else:
+                print('not enough mp, proceeding to do nothing')
+    if enemy1.hp == 0:
+                print('you won')
+                running = 1  # code stops when enemy1 reaches 0 hp first
                 
                 
     if enemy1.hp > 0:
