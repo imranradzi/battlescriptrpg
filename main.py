@@ -28,9 +28,9 @@ while running == 0:
         elif int(actioninput) == 2:
             player.skillindex()
             skillinput = int(input('choose skill\n')) - 1
-            for i in player.skills:
-                runnableskills = 0 # counter of how many skills we can do considering our mp
-                if player.mp > i['mpcost']:
+            runnableskills = 0 # counter of how many skills we can do considering our mp
+            for i in player.skills:          
+                if player.mp >= i['mpcost']:
                     runnableskills += 1
             if runnableskills > 0:
                 if player.skills[skillinput]['type'] == 'attack':
