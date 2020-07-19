@@ -1,11 +1,13 @@
 import random
+import math
 
 from gameclass.playerclass import player
 from gameclass.skills import skill1, heal1
 
 
-player1 = player('player1', 100, 50, 30, [skill1, heal1])
-playerlist = [player1]                          # planning on including many players in the future
+player1 = player('player1', 100, 50, 30, [skill1])
+player2 = player('player2', 100, 80, 15, [heal1])
+playerlist = [player1, player2]                    
 
 enemy1 = player('enemy1', 100, 50, 30, [])
 
@@ -24,9 +26,10 @@ while running == 0:
             actioninput = input('choose action\n')
             if int(actioninput) == 1:
                 # basic attack
-                playerdamage = random.randrange(0.9 * player.dmg, 1.1 * player.dmg)          # generate damage 0.9 - 1.1 of our player's 
-                enemy1.dmgreceive(playerdamage)                                                # base damage
-                print('player1 dealt', playerdamage, 'damage')
+                playerdamage = random.randrange(math.floor(0.9 * player.dmg), math.ceil(1.1 * player.dmg))
+                # generate damage 0.9 - 1.1 of our player's 
+                enemy1.dmgreceive(playerdamage)                                                
+                print(player.name, 'dealt', playerdamage, 'damage')
                 playerrun = 1   # player's action stops after performing an attack
             elif int(actioninput) == 2:
                 player.skillindex()
