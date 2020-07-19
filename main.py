@@ -1,10 +1,10 @@
 import random
 
 from gameclass.playerclass import player
-from gameclass.skills import skill1
+from gameclass.skills import skill1, heal1
 
 
-player1 = player('player1', 100, 50, 30, [skill1])
+player1 = player('player1', 100, 50, 30, [skill1, heal1])
 playerlist = [player1]                          # planning on including many players in the future
 
 enemy1 = player('enemy1', 100, 50, 30, [])
@@ -33,9 +33,15 @@ while running == 0:
                 if player.mp > i['mpcost']:
                     runnableskills += 1
             if runnableskills > 0:
-                player.manalose(player.skills[skillinput]['mpcost'])
-                enemy1.dmgreceive(player.skills[skillinput]['dmg'])
-                print('player1 dealt', player.skills[skillinput]['dmg'], 'damage')
+                if player.skills[skillinput]['type'] == 'attack':
+                    # check to see if our skill is an attack type or heal type
+                    player.manalose(player.skills[skillinput]['mpcost'])
+                    enemy1.dmgreceive(player.skills[skillinput]['dmg'])
+                    print(player.name, 'dealt', player.skills[skillinput]['dmg'], 'damage')
+                elif player.skills[skillinput]['type'] == 'heal':
+                    player.manalose(player.skills[skillinput]['mpcost'])
+                    player.dmgheal(player.skills[skillinput]['dmg'])
+                    print(player.name, 'healed for', player.skills[skillinput]['dmg'], 'hp')
             else:
                 print('not enough mp, proceeding to do nothing')
     if enemy1.hp == 0:
