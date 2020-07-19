@@ -1,10 +1,10 @@
 import random
-import skills
 
 from gameclass.playerclass import player
+from gameclass.skills import skill1
 
 
-player1 = player('player1', 100, 50, 30, [])
+player1 = player('player1', 100, 50, 30, [skill1])
 playerlist = [player1]                          # planning on including many players in the future
 
 enemy1 = player('enemy1', 100, 50, 30, [])
@@ -29,25 +29,25 @@ while running == 0:
                 print('you won')
                 running = 1                              # code stops when enemy1 reaches 0 hp first
         elif int(actioninput) == 2:
-            skillindex()
+            player.skillindex()
             skillinput = input('choose skill')
             enemy1.dmgreceive(skilllist[skillinput]['dmg'])
-            print("player1 dealt", skilllist[skillinput]['dmg'], 'damage'
+            print("player1 dealt", skilllist[skillinput]['dmg'], 'damage')
                 
                 
     if enemy1.hp > 0:
          targetplayerindex = random.randrange(0, len(playerlist))       # targets random player in playerlist
          playerlist[targetplayerindex].dmgreceive(enemy1.dmg)   
      
-     for player in playerlist:
+    for player in playerlist:
         # checks how many of our party members are dead every loop
         if player.hp == 0:
             zerohpplayers += 1
      
-     if zerohpplayers == len(playerlist):
-     # set running to 1 which breaks the loop, when everyone in our party is dead
-         running = 1
-         print('you lost')                       
+    if zerohpplayers == len(playerlist):
+        # set running to 1 which breaks the loop, when everyone in our party is dead
+        running = 1
+        print('you lost')                       
 
 
 
