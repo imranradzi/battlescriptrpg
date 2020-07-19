@@ -30,9 +30,9 @@ while running == 0:
                 running = 1                              # code stops when enemy1 reaches 0 hp first
         elif int(actioninput) == 2:
             player.skillindex()
-            skillinput = input('choose skill')
-            enemy1.dmgreceive(skilllist[skillinput]['dmg'])
-            print("player1 dealt", skilllist[skillinput]['dmg'], 'damage')
+            skillinput = int(input('choose skill')) - 1
+            enemy1.dmgreceive(player.skills[skillinput]['dmg'])
+            print("player1 dealt", player.skills[skillinput]['dmg'], 'damage')
                 
                 
     if enemy1.hp > 0:
