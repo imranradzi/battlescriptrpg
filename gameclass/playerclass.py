@@ -24,5 +24,8 @@ class player:
         self.hp -= damagetaken
         if self.hp < 0:
             self.hp = 0
-
+            
+    def skillindex(self):
+        for skill in skills:
+            print((skills.index(skill) + 1) + ':', skill['name']
 
