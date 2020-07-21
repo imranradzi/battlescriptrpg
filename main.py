@@ -66,21 +66,25 @@ while running == 0:
                 else:
                     # when player doesn't want to do anything
                     playerrun = 1
-                if enemy1.hp == 0:
+                for enemy in enemylist:
+                    # we check if there is any enemy with positive hp, if not, then players win
+                    if enemy.hp > 0:
+                        enemyattacklist.append(enemy)
+                if enemyattacklist == []:           # if there are no enemies to attack, players have won
                         print('you won')
                         running = 1  # code stops when enemy1 reaches 0 hp first
-                        break
-                        
-    attacklist = []
-    for player in playerlist:
-        # some players might have 0 hp, so we create a list of attackable players for the enemy
-        # which consists of players with hp greater than 0
-        if player.hp > 0:
-            attacklist.append(player)
-                
-    if enemy1.hp > 0:
-         targetplayerindex = random.randrange(0, len(attacklist))       # targets random player in playerlist
-         attacklist[targetplayerindex].dmgreceive(enemy1.dmg)   
+                        break             
+        
+    for enemy in enemylist:
+        attacklist = []
+        for player in playerlist:
+            # some players might have 0 hp, so we create a list of attackable players for the enemy
+            # which consists of players with hp greater than 0
+            if player.hp > 0:
+                attacklist.append(player)
+        if enemy.hp > 0:
+             targetplayerindex = random.randrange(0, len(attacklist))       # targets random player in playerlist
+             attacklist[targetplayerindex].dmgreceive(enemy.dmg)   
      
     for player in playerlist:
         # checks how many of our party members are dead every loop
