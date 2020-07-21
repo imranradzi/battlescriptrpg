@@ -10,6 +10,8 @@ player2 = player('player2', 100, 80, 15, [gs.heal1])
 playerlist = [player1, player2]                    
 
 enemy1 = player('enemy1', 100, 50, 30, [])
+enemy2 = player('enemy2', 100, 50, 30, [])
+enemylist = [enemy1, enemy2]
 
 running = 0
 while running == 0:
@@ -17,7 +19,8 @@ while running == 0:
     
     for player in playerlist:
         player.statsbar()
-    enemy1.statsbar()
+    for enemy in enemylist:
+        enemy.statsbar()
 
     playerrun = 0
     while playerrun == 0:
@@ -25,11 +28,19 @@ while running == 0:
             if player.hp > 0: # player can only choose actions if they're alive
                 player.actions()
                 actioninput = input('choose action\n')
+                enemyattacklist = []
+                for enemy in enemylist:
+                    # at the start of every player's attack, create a list of enemies still alive
+                    if enemy.hp > 0:
+                        enemyattacklist.append(enemy)
                 if int(actioninput) == 1:
                     # basic attack
                     playerdamage = random.randrange(math.floor(0.9 * player.dmg), math.ceil(1.1 * player.dmg))
-                    # generate damage 0.9 - 1.1 of our player's 
-                    enemy1.dmgreceive(playerdamage)                                                
+                    # generate damage 0.9 - 1.1 of our player's
+                    for enemy in enemyattacklist:
+                        print(str(enemyattacklist.index(enemy) + 1) + ':' + enemy.name) # print list of enemies player can attack
+                    enemyattackindex = int(input('choose an enemy to attack')) - 1
+                    enemyattacklist[enemyattackindex].dmgreceive(playerdamage)                                              
                     print(player.name, 'dealt', playerdamage, 'damage')
                     playerrun = 1   # player's action stops after performing an attack
                 elif int(actioninput) == 2:
@@ -39,7 +50,10 @@ while running == 0:
                         if player.skills[skillinput]['type'] == 'attack':
                             # check to see if our skill is an attack type or heal type
                             player.manalose(player.skills[skillinput]['mpcost'])
-                            enemy1.dmgreceive(player.skills[skillinput]['dmg'])
+                            for enemy in enemyattacklist:
+                                print(str(enemyattacklist.index(enemy) + 1) + ':' + enemy.name)
+                            enemyattackindex = int(input('choose an enemy to attack')) - 1
+                            enemyattacklist[enemyattackindex].dmgreceive(player.skills[skillinput]['dmg'])
                             print(player.name, 'dealt', player.skills[skillinput]['dmg'], 'damage')
                         elif player.skills[skillinput]['type'] == 'heal':
                             player.manalose(player.skills[skillinput]['mpcost'])
