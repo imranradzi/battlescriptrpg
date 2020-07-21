@@ -1,12 +1,12 @@
 import random
 import math
+import gameclass.skills as gs
 
 from gameclass.playerclass import player
-from gameclass.skills import skill1, heal1
 
 
-player1 = player('player1', 100, 50, 30, [skill1])
-player2 = player('player2', 100, 80, 15, [heal1])
+player1 = player('player1', 100, 50, 30, [gs.skill1])
+player2 = player('player2', 100, 80, 15, [gs.heal1])
 playerlist = [player1, player2]                    
 
 enemy1 = player('enemy1', 100, 50, 30, [])
@@ -55,6 +55,7 @@ while running == 0:
                 if enemy1.hp == 0:
                         print('you won')
                         running = 1  # code stops when enemy1 reaches 0 hp first
+                        break
                         
     attacklist = []
     for player in playerlist:
