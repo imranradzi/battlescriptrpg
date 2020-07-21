@@ -1,4 +1,4 @@
-
+import math
 
 
 class player:
@@ -13,12 +13,23 @@ class player:
 
     def statsbar(self):
         # function to print out name, hp and mp of whichever player
-        print(str(self.name) + "| HP:", str(self.hp) + "/" + str(self.maxhp), "| MP:",
-              str(self.mp) + "/" + str(self.maxmp) +"\n")
-
+        # percentage of player's hp and mp left
+        hppercent = math.ceil((self.hp/self.maxhp) * 100)   
+        mppercent = math.ceil((self.mp / self.maxmp) * 100)
+        # the number of bars representing how much more hp and mp our player has
+        hpbarsquantity = int((hppercent/100 * 20))
+        mpbarsquantity = int((mppercent/100 * 10))
+        print(str(self.name) + ((10-(len(str(self.name)))) * ' ') +
+              '| HP:', (' ' * (3 - (len(str(self.hp))))) + str(self.hp) + '/' + str(self.maxhp),       
+              ('█' * hpbarsquantity) + (' ' * (20 - hpbarsquantity)),                                  
+              '| MP:', (' ' * (2 - (len(str(self.mp))))) + str(self.mp) + '/' + str(self.maxmp),       
+              ('█' * mpbarsquantity) + (' ' * (10 - mpbarsquantity)))
+        ''' the blank bars are for formatting, since the statsbar might look messy, say if hp 100/100 turns
+            to hp 90/100, the whole text shifts to the left so we want to avoid that '''
+            
     def actions(self):
         # prints out list of actions player can do
-        print("actions:\n 1. attack\n 2. skills\n 3. do nothing")
+        print('actions:\n 1. attack\n 2. skills\n 3. do nothing')
 
     def dmgreceive(self, damagetaken):
         self.hp -= damagetaken
