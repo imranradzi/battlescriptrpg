@@ -40,8 +40,8 @@ while running == 0:
                     for enemy in enmatkl:
                         print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name) # print list of enemies player can attack
                     enmatkind = int(input('choose an enemy to attack')) - 1
-                    enmatkl[enmatkind].dmgreceive(playerdamage)                                              
-                    print(player.name, 'dealt', playerdamage, 'damage')
+                    print(player.name, 'dealt', playerdamage - enmatkl[enmatkind].dfs, 'damage')
+                    enmatkl[enmatkind].dmgreceive(playerdamage)
                     playerrun = 1   # player's action stops after performing an attack
                 elif int(actioninput) == 2:
                     player.skillindex()
@@ -53,12 +53,12 @@ while running == 0:
                             for enemy in enmatkl:
                                 print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name)
                             enmatkind = int(input('choose an enemy to attack')) - 1
+                            print(player.name, 'dealt', player.skills[sklinput]['dmg'] - enmatkl[enmatkind].dfs, 'damage')
                             enmatkl[enmatkind].dmgreceive(player.skills[sklinput]['dmg'])
-                            print(player.name, 'dealt', player.skills[sklinput]['dmg'], 'damage')
                         elif player.skills[sklinput]['type'] == 'heal':
                             player.manalose(player.skills[sklinput]['mpcost'])
                             player.dmgheal(player.skills[sklinput]['dmg'])
-                            print(player.name, 'healed for', player.skills[sklinput]['dmg'], 'hp')
+                            print(player.name, 'healed for', player.skills[sklinput]['dmg'])
                         playerrun = 1
                     else:
                         print('not enough mp, back to action list')
