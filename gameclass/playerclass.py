@@ -2,10 +2,11 @@ import math
 
 
 class player:
-    def __init__(self, name, hp, mp, dmg, skills):
+    def __init__(self, name, hp, mp, dfs, dmg, skills):
         self.name = name
         self.maxhp = hp
         self.hp = hp                # two hp, this one's for taking damage
+        self.dfs = dfs              # player defense which mitigates damage
         self.maxmp = mp
         self.mp = mp                # same concept as hp
         self.dmg = dmg
@@ -32,19 +33,24 @@ class player:
         print('actions:\n 1. attack\n 2. skills\n 3. do nothing')
 
     def dmgreceive(self, damagetaken):
-        self.hp -= damagetaken
+        self.hp -= (damagetaken - self.dfs)
         if self.hp < 0:
             self.hp = 0
+        print(self.name, 'has taken', (damagetaken - self.dfs), 'damage, current hp is', self.hp)
+        return (damagetaken - self.dfs)
             
     def dmgheal(self, damageheal):
         self.hp += damageheal
         if self.hp > self.maxhp:
             self.hp = self.maxhp
+        print(self.name, 'has healed for', (damageheal), 'hp, current hp is', self.hp)
+        return damageheal
 
     def manalose(self, manaloss):
         self.mp -= manaloss
         if self.mp < 0:
             self.mp = 0
+        return manaloss
             
     def skillindex(self):
         for skill in self.skills:
