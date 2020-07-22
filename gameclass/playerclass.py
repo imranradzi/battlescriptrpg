@@ -37,20 +37,17 @@ class player:
         if self.hp < 0:
             self.hp = 0
         print(self.name, 'has taken', (damagetaken - self.dfs), 'damage, current hp is', self.hp)
-        return (damagetaken - self.dfs)
             
     def dmgheal(self, damageheal):
         self.hp += damageheal
         if self.hp > self.maxhp:
             self.hp = self.maxhp
         print(self.name, 'has healed for', (damageheal), 'hp, current hp is', self.hp)
-        return damageheal
 
     def manalose(self, manaloss):
         self.mp -= manaloss
         if self.mp < 0:
             self.mp = 0
-        return manaloss
             
     def skillindex(self):
         for skill in self.skills:
