@@ -5,8 +5,8 @@ import gameclass.skills as gs
 from gameclass.playerclass import player
 
 
-player1 = player('player1', 100, 50, 30, 15, [gs.skill1], [])
-player2 = player('player2', 100, 80, 15, 10, [gs.heal1], [])
+player1 = player('player1', 100, 50, 30, 15, [gs.skill1, gs.dotdmg1], [])
+player2 = player('player2', 100, 80, 15, 10, [gs.heal1, gs.dotheal1], [])
 playerlist = [player1, player2]                    
 
 enemy1 = player('enemy1', 100, 50, 30, 10, [], [])
@@ -50,9 +50,9 @@ while running == 0:
                     player.skillindex()
                     sklinput = int(input('choose skill\n')) - 1
                     if player.mp > player.skills[sklinput]['mpcost']:
+                        player.manalose(player.skills[sklinput]['mpcost'])
                         if player.skills[sklinput]['type'] == 'attack':
                             # check to see if our skill is an attack type or heal type
-                            player.manalose(player.skills[sklinput]['mpcost'])
                             for enemy in enmatkl:
                                 print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name)
                             enmatkind = int(input('choose an enemy to attack')) - 1
@@ -62,9 +62,18 @@ while running == 0:
                             print(player.name, 'dealt', playerdamage, 'damage')
                             enmatkl[enmatkind].dmgreceive(playerdamage)
                         elif player.skills[sklinput]['type'] == 'heal':
-                            player.manalose(player.skills[sklinput]['mpcost'])
                             player.dmgheal(player.skills[sklinput]['dmg'])
                             print(player.name, 'healed for', player.skills[sklinput]['dmg'])
+                        elif player.skills[sklinput]['type'] == 'dotdmg':
+                            for enemy in enmatkl:
+                                print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name)
+                            enmatkind = int(input('choose an enemy to attack')) - 1
+                            enmatkl[enmatkind].dotlist.append(player.skills[sklinput])
+                            print('player casted', player.skills[sklinput]['name'],
+                                  'on', enmatkl[enmatkind].name)
+                        elif player.skills[sklinput]['type'] == 'dotheal':
+                            player.dotlist.append(player.skills[sklinput])
+                            print('player casted', player.skills[sklinput]['name'], 'on themselves')
                         playerrun = 1
                     else:
                         print('not enough mp, back to action list')
@@ -88,26 +97,26 @@ while running == 0:
             # which consists of players with hp greater than 0
             if player.hp > 0:
                 attacklist.append(player)
-        if enemy.hp > 0:
+        if enemy.hp > 0 and attacklist != []:
              targetplayerindex = random.randrange(0, len(attacklist))       # targets random player in playerlist
              attacklist[targetplayerindex].dmgreceive(enemy.dmg)   
     
-    print('\ndotphase')
+    print('\n--------')
     # at the end of the turn, we deal all the damage over time skills (and heals) to players and enemies
     
     for player in playerlist:
         if player.hp > 0 and player.dotlist != []:
             for i in player.dotlist:
-                if i['type'] == dotheal and i['dotinfo']['turns'] > 0:
-                    player.dmgheal(i['dotinfo']['dmg'])
-                    i['dotinfo']['turns'] -= 1
+                if i['type'] == 'dotheal' and i['turns'] > 0:
+                    player.dmgheal(i['dmg'])
+                    i['turns'] -= 1
                     
     for enemy in enemylist:
         if enemy.hp > 0 and enemy.dotlist != []:
             for i in enemy.dotlist:
-                if i['type'] == dotdmg and i['dotinfo']['turns'] > 0:
-                    enemy.dmgreceive(i['dotinfo']['dmg'])
-                    i['dotinfo']['turns'] -= 1
+                if i['type'] == 'dotdmg' and i['turns'] > 0:
+                    enemy.dmgreceive(i['dmg'])
+                    i['turns'] -= 1
                     
     for enemy in enemylist:
         # we check if there is any enemy with positive hp, if not, then players win
