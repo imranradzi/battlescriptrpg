@@ -5,12 +5,12 @@ import gameclass.skills as gs
 from gameclass.playerclass import player
 
 
-player1 = player('player1', 100, 50, 10, 30, [gs.skill1], [])
-player2 = player('player2', 100, 80, 10, 15, [gs.heal1], [])
+player1 = player('player1', 100, 50, 30, 15, [gs.skill1], [])
+player2 = player('player2', 100, 80, 15, 10, [gs.heal1], [])
 playerlist = [player1, player2]                    
 
-enemy1 = player('enemy1', 100, 50, 10, 30, [], [])
-enemy2 = player('enemy2', 100, 50, 10, 30, [], [])
+enemy1 = player('enemy1', 100, 50, 30, 10, [], [])
+enemy2 = player('enemy2', 100, 50, 30, 10, [], [])
 enemylist = [enemy1, enemy2]
 
 running = 0
@@ -40,6 +40,8 @@ while running == 0:
                         print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name) # print list of enemies player can attack
                     enmatkind = int(input('choose an enemy to attack')) - 1
                     playerdamage = basedamage - enmatkl[enmatkind].dfs
+                    if playerdamage <= 0:
+                        playerdamage = 0
                     # generate damage 0.9 - 1.1 of our player's
                     print(player.name, 'dealt', playerdamage, 'damage')
                     enmatkl[enmatkind].dmgreceive(playerdamage)
@@ -55,6 +57,8 @@ while running == 0:
                                 print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name)
                             enmatkind = int(input('choose an enemy to attack')) - 1
                             playerdamage = player.skills[sklinput]['dmg'] - enmatkl[enmatkind].dfs
+                            if playerdamage <= 0:
+                                playerdamage = 0
                             print(player.name, 'dealt', playerdamage, 'damage')
                             enmatkl[enmatkind].dmgreceive(playerdamage)
                         elif player.skills[sklinput]['type'] == 'heal':
