@@ -78,6 +78,10 @@ while running == 0:
                     else:
                         print('not enough mp, back to action list')
                         # playerrun isn't set to 1, so loop continues and player keeps selecting action
+                elif int(actioninput) == 3:
+                    player.dfs *= 2
+                    player.dotlist.append({'type': 'block'})
+                    playerrun = 1
                 else:
                     # when player doesn't want to do anything
                     playerrun = 1
@@ -98,8 +102,8 @@ while running == 0:
             if player.hp > 0:
                 attacklist.append(player)
         if enemy.hp > 0 and attacklist != []:
-             targetplayerindex = random.randrange(0, len(attacklist))       # targets random player in playerlist
-             attacklist[targetplayerindex].dmgreceive(enemy.dmg)   
+             targplyindex = random.randrange(0, len(attacklist))       # targets random player in playerlist
+             attacklist[targplyindex].dmgreceive(enemy.dmg - attacklist[targplyindex].dfs)   
     
     print('\n--------')
     # at the end of the turn, we deal all the damage over time skills (and heals) to players and enemies
@@ -110,6 +114,11 @@ while running == 0:
                 if i['type'] == 'dotheal' and i['turns'] > 0:
                     player.dmgheal(i['dmg'])
                     i['turns'] -= 1
+                if i['type'] == 'block':
+                    # if player blocks for the turn, then this returns their defense back to normal
+                    # for the next turn
+                    player.dfs = int(player.dfs/2)
+                    player.dotlist.pop(player.dotlist.index(i))
                     
     for enemy in enemylist:
         if enemy.hp > 0 and enemy.dotlist != []:
