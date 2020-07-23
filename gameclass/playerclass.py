@@ -2,15 +2,16 @@ import math
 
 
 class player:
-    def __init__(self, name, hp, mp, dfs, dmg, skills):
+    def __init__(self, name, hp, mp, dmg, dfs, skills, dotlist):
         self.name = name
         self.maxhp = hp
         self.hp = hp                # two hp, this one's for taking damage
-        self.dfs = dfs              # player defense which mitigates damage
         self.maxmp = mp
         self.mp = mp                # same concept as hp
         self.dmg = dmg
+        self.dfs = dfs              # player defense which mitigates damage
         self.skills = skills        # we'll use a list/dictionary to store skills
+        self.dotlist = []
 
     def statsbar(self):
         # function to print out name, hp and mp of whichever player
