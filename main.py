@@ -91,7 +91,32 @@ while running == 0:
         if enemy.hp > 0:
              targetplayerindex = random.randrange(0, len(attacklist))       # targets random player in playerlist
              attacklist[targetplayerindex].dmgreceive(enemy.dmg)   
-     
+    
+    print('\ndotphase')
+    # at the end of the turn, we deal all the damage over time skills (and heals) to players and enemies
+    
+    for player in playerlist:
+        if player.hp > 0 and player.dotlist != []:
+            for i in player.dotlist:
+                if i['type'] == dotheal and i['dotinfo']['turns'] > 0:
+                    player.dmgheal(i['dotinfo']['dmg'])
+                    i['dotinfo']['turns'] -= 1
+                    
+    for enemy in enemylist:
+        if enemy.hp > 0 and enemy.dotlist != []:
+            for i in enemy.dotlist:
+                if i['type'] == dotdmg and i['dotinfo']['turns'] > 0:
+                    enemy.dmgreceive(i['dotinfo']['dmg'])
+                    i['dotinfo']['turns'] -= 1
+                    
+    for enemy in enemylist:
+        # we check if there is any enemy with positive hp, if not, then players win
+        if enemy.hp > 0:
+            enmatkl.append(enemy)
+        if enmatkl == []:           # if there are no enemies to attack, players have won
+            print('you won')
+            break         
+
     for player in playerlist:
         # checks how many of our party members are dead every loop
         if player.hp == 0:
