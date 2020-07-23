@@ -38,7 +38,7 @@ while running == 0:
                     basedamage = random.randrange(math.floor(0.9 * player.dmg), math.ceil(1.1 * player.dmg))
                     for enemy in enmatkl:
                         print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name) # print list of enemies player can attack
-                    enmatkind = int(input('choose an enemy to attack')) - 1
+                    enmatkind = int(input('choose an enemy to attack\n')) - 1
                     playerdamage = basedamage - enmatkl[enmatkind].dfs
                     if playerdamage <= 0:
                         playerdamage = 0
@@ -55,7 +55,7 @@ while running == 0:
                             # check to see if our skill is an attack type or heal type
                             for enemy in enmatkl:
                                 print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name)
-                            enmatkind = int(input('choose an enemy to attack')) - 1
+                            enmatkind = int(input('choose an enemy to attack\n')) - 1
                             playerdamage = player.skills[sklinput]['dmg'] - enmatkl[enmatkind].dfs
                             if playerdamage <= 0:
                                 playerdamage = 0
@@ -67,7 +67,7 @@ while running == 0:
                         elif player.skills[sklinput]['type'] == 'dotdmg':
                             for enemy in enmatkl:
                                 print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name)
-                            enmatkind = int(input('choose an enemy to attack')) - 1
+                            enmatkind = int(input('choose an enemy to attack\n')) - 1
                             enmatkl[enmatkind].dotlist.append(player.skills[sklinput])
                             print('player casted', player.skills[sklinput]['name'],
                                   'on', enmatkl[enmatkind].name)
@@ -114,6 +114,8 @@ while running == 0:
                 if i['type'] == 'dotheal' and i['turns'] > 0:
                     player.dmgheal(i['dmg'])
                     i['turns'] -= 1
+                    if i['turns'] == 0:
+                        player.dotlist.pop(player.dotlist.index(i))
                 if i['type'] == 'block':
                     # if player blocks for the turn, then this returns their defense back to normal
                     # for the next turn
@@ -126,6 +128,8 @@ while running == 0:
                 if i['type'] == 'dotdmg' and i['turns'] > 0:
                     enemy.dmgreceive(i['dmg'])
                     i['turns'] -= 1
+                    if i['turns'] == 0:
+                        enemy.dotlist.pop(enemy.dotlist.index(i))
                     
     for enemy in enemylist:
         # we check if there is any enemy with positive hp, if not, then players win
