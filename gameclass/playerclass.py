@@ -33,16 +33,16 @@ class player:
         print('actions:\n 1. attack\n 2. skills\n 3. do nothing')
 
     def dmgreceive(self, damagetaken):
-        self.hp -= (damagetaken - self.dfs)
+        self.hp -= damagetaken
         if self.hp < 0:
             self.hp = 0
-        print(self.name, 'has taken', (damagetaken - self.dfs), 'damage, current hp is', self.hp)
+        print(self.name, 'has taken', damagetaken, 'damage, current hp is', self.hp)
             
     def dmgheal(self, damageheal):
         self.hp += damageheal
         if self.hp > self.maxhp:
             self.hp = self.maxhp
-        print(self.name, 'has healed for', (damageheal), 'hp, current hp is', self.hp)
+        print(self.name, 'has healed for', damageheal, 'hp, current hp is', self.hp)
 
     def manalose(self, manaloss):
         self.mp -= manaloss
