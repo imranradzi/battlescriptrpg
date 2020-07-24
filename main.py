@@ -64,7 +64,16 @@ while running == 0:
                             print(player.name, 'dealt', playerdamage, 'damage')
                             enmatkl[enmatkind].dmgreceive(playerdamage)
                         elif player.skills[sklinput]['type'] == 'heal':
-                            player.dmgheal(player.skills[sklinput]['dmg'])
+                            heallist = []
+                            # list of healable players
+                            healindex = 1
+                            for ply in playerlist:
+                                if ply.hp > 0:
+                                    heallist.append(ply)
+                                    print(str(healindex) + ':' + ply.name)
+                                    healindex += 1
+                            healchoose = int(input('choose a player to heal\n')) - 1
+                            heallist[healchoose].dmgheal(player.skills[sklinput]['dmg'])
                         elif player.skills[sklinput]['type'] == 'dotdmg':
                             # for when dps class does DOT damage to enemies
                             for enemy in enmatkl:
@@ -75,8 +84,18 @@ while running == 0:
                                   'on', enmatkl[enmatkind].name)
                         elif player.skills[sklinput]['type'] == 'dotheal':
                             # for when healer class heals, but per turn
-                            player.dotlist.append(player.skills[sklinput])
-                            print(player.name, 'casted', player.skills[sklinput]['name'], 'on themselves')
+                            heallist = []
+                            # list of healable players
+                            healindex = 1
+                            for ply in playerlist:
+                                if ply.hp > 0:
+                                    heallist.append(ply)
+                                    print(str(healindex) + ':' + ply.name)
+                                    healindex += 1
+                            healchoose = int(input('choose a player to heal\n')) - 1
+                            heallist[healchoose].dotlist.append(player.skills[sklinput])
+                            print(player.name, 'casted', player.skills[sklinput]['name'], 'on',
+                                 heallist[healchoose].name)
                         elif player.skills[sklinput]['type'] == 'alldefense':
                             # for when tanker class casts his defense type on all party members
                             for p in playerlist:
