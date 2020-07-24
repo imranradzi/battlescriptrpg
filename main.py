@@ -108,7 +108,12 @@ while running == 0:
                             for enemy in enmatkl:
                                 print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name)
                             enmatkind = int(input('choose an enemy to attack\n')) - 1
-                            enmatkl[enmatkind].stuncounter = 1
+                            if enmatkl[enmatkind].stuncounter < player.skills[sklinput]['stun duration']:
+                                # if a previous stun skill during the same turn by another player
+                                # stuns for more than the current's skill stun duration,
+                                # then we don't change the stun duration
+                                # since we don't want stuns to stack
+                                enmatkl[enmatkind].stuncounter = player.skills[sklinput]['stun duration']
                             playerdamage = player.skills[sklinput]['dmg'] - enmatkl[enmatkind].dfs
                             if playerdamage <= 0:
                                 playerdamage = 0
@@ -153,6 +158,7 @@ while running == 0:
                     # in which case it might actually heal players, which we don't want
                     # so we set the damage to zero
                     enemydamage = 0
+             print(enemy.name, 'attacks')
              attacklist[targplyindex].dmgreceive(enemydamage)
         elif enemy.hp > 0 and enemy.stuncounter > 0:
             enemy.stuncounter -= 1 # if enemy is stunned, then for next turn, we reduce the stuncounter by 1
@@ -205,6 +211,3 @@ while running == 0:
         # set running to 1 which breaks the loop, when everyone in our party is dead
         running = 1
         print('you lost')                       
-
-
-
