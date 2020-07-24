@@ -2,7 +2,7 @@ import math
 
 
 class player:
-    def __init__(self, name, hp, mp, dmg, dfs, skills, dotlist):
+    def __init__(self, name, hp, mp, dmg, dfs, skills, dotlist, stuncounter):
         self.name = name
         self.maxhp = hp
         self.hp = hp                # two hp, this one's for taking damage
@@ -13,7 +13,8 @@ class player:
         self.maxdfs = dmg
         self.dfs = dfs              # player defense which mitigates damage
         self.skills = skills        # we'll use a list/dictionary to store skills
-        self.dotlist = []
+        self.dotlist = dotlist
+        self.stuncounter = stuncounter      # will be used to count how many turns player will be stunned
 
     def statsbar(self):
         # function to print out name, hp and mp of whichever player
