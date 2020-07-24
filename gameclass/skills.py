@@ -15,3 +15,5 @@ dotheal1 = {'name': 'dotheal1', 'type': 'dotheal', 'dmg': 40, 'mpcost': 60, 'des
 
 fulldfs1 = {'name': 'fulldfs1', 'type': 'alldefense', 'dmg': 30, 'mpcost': 50,
             'description': 'doubles defense of all party members'}
+
+stun1 = {'name': 'stun1', 'type': 'stun', 'dmg': 25, 'mpcost': 25, 'description': 'damages and stuns'}
