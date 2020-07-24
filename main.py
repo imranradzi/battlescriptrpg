@@ -22,10 +22,11 @@ while running == 0:
     for enemy in enemylist:
         enemy.statsbar()
 
-    playerrun = 0
-    while playerrun == 0:
-        for player in playerlist:
-            if player.hp > 0: # player can only choose actions if they're alive
+    
+    for player in playerlist:
+        if player.hp > 0: # player can only choose actions if they're alive
+            playerrun = 0
+            while playerrun == 0:
                 player.actions()
                 actioninput = input('choose action\n')
                 enmatkl = []
@@ -85,14 +86,17 @@ while running == 0:
                 else:
                     # when player doesn't want to do anything
                     playerrun = 1
+                enmatkl = []
                 for enemy in enemylist:
                     # we check if there is any enemy with positive hp, if not, then players win
                     if enemy.hp > 0:
                         enmatkl.append(enemy)
                 if enmatkl == []:           # if there are no enemies to attack, players have won
-                        print('you won')
-                        running = 1  # code stops when enemy1 reaches 0 hp first
-                        break             
+                    running = 1  # code stops when enemy1 reaches 0 hp first
+                    break
+        if running == 1:
+            # if at a player's turn all enemies are dead, we break the loop that cycles through all players
+            break
         
     for enemy in enemylist:
         attacklist = []
@@ -130,7 +134,8 @@ while running == 0:
                     i['turns'] -= 1
                     if i['turns'] == 0:
                         enemy.dotlist.pop(enemy.dotlist.index(i))
-                    
+    
+    enmatkl = []
     for enemy in enemylist:
         # we check if there is any enemy with positive hp, if not, then players win
         if enemy.hp > 0:
