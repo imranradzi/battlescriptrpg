@@ -12,3 +12,6 @@ dotdmg1 = {'name': 'dotdmg1', 'type': 'dotdmg', 'dmg': 30, 'mpcost': 35, 'descri
 
 dotheal1 = {'name': 'dotheal1', 'type': 'dotheal', 'dmg': 40, 'mpcost': 60, 'description': 'basic dot heal skill',
             'turns': 2}
+
+fulldfs1 = {'name': 'fulldfs1', 'type': 'alldefense', 'dmg': 30, 'mpcost': 50,
+            'description': 'doubles defense of all party members'}
