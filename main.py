@@ -5,13 +5,13 @@ import gameclass.skills as gs
 from gameclass.playerclass import player
 
 
-player1 = player('player1', 100, 50, 30, 15, [gs.skill1, gs.dotdmg1], [])
-player2 = player('player2', 100, 80, 15, 10, [gs.heal1, gs.dotheal1], [])
-player3 = player('player3', 100, 80, 25, 25, [gs.fulldfs1], [])
+player1 = player('player1', 100, 50, 30, 15, [gs.skill1, gs.dotdmg1], [], 0)
+player2 = player('player2', 100, 80, 15, 10, [gs.heal1, gs.dotheal1], [], 0)
+player3 = player('player3', 100, 80, 25, 25, [gs.fulldfs1, gs.stun1], [], 0)
 playerlist = [player1, player2, player3]                    
 
-enemy1 = player('enemy1', 100, 50, 30, 10, [], [])
-enemy2 = player('enemy2', 100, 50, 30, 10, [], [])
+enemy1 = player('enemy1', 100, 50, 30, 10, [], [], 0)
+enemy2 = player('enemy2', 100, 50, 30, 10, [], [], 0)
 enemylist = [enemy1, enemy2]
 
 running = 0
@@ -103,6 +103,17 @@ while running == 0:
                                     p.dotlist.append(player.skills[sklinput])
                                     p.dfs += player.skills[sklinput]['dmg']
                             print(player.name, 'casted', player.skills[sklinput]['name'], 'on all party members')
+                        elif player.skills[sklinput]['type'] == 'stun':
+                            # for when dps class does DOT damage to enemies
+                            for enemy in enmatkl:
+                                print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name)
+                            enmatkind = int(input('choose an enemy to attack\n')) - 1
+                            enmatkl[enmatkind].stuncounter = 1
+                            playerdamage = player.skills[sklinput]['dmg'] - enmatkl[enmatkind].dfs
+                            if playerdamage <= 0:
+                                playerdamage = 0
+                            print(player.name, 'dealt', playerdamage, 'damage and stunned', enmatkl[enmatkind].name)
+                            enmatkl[enmatkind].dmgreceive(playerdamage)
                         playerrun = 1
                     else:
                         print('not enough mp, back to action list')
@@ -133,7 +144,8 @@ while running == 0:
             # which consists of players with hp greater than 0
             if player.hp > 0:
                 attacklist.append(player)
-        if enemy.hp > 0 and attacklist != []:
+        if enemy.hp > 0 and attacklist != [] and enemy.stuncounter == 0:
+             # enemy can only attack if they're alive, at least a player is alive, and if they're not stunned
              targplyindex = random.randrange(0, len(attacklist))       # targets random player in playerlist
              enemydamage = enemy.dmg - attacklist[targplyindex].dfs
              if enemydamage < 0:
@@ -141,7 +153,9 @@ while running == 0:
                     # in which case it might actually heal players, which we don't want
                     # so we set the damage to zero
                     enemydamage = 0
-             attacklist[targplyindex].dmgreceive(enemydamage)   
+             attacklist[targplyindex].dmgreceive(enemydamage)
+        elif enemy.hp > 0 and enemy.stuncounter > 0:
+            enemy.stuncounter -= 1 # if enemy is stunned, then for next turn, we reduce the stuncounter by 1
     
     print('\n--------')
     # at the end of the turn, we deal all the damage over time skills (and heals) to players and enemies
