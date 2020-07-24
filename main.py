@@ -7,7 +7,8 @@ from gameclass.playerclass import player
 
 player1 = player('player1', 100, 50, 30, 15, [gs.skill1, gs.dotdmg1], [])
 player2 = player('player2', 100, 80, 15, 10, [gs.heal1, gs.dotheal1], [])
-playerlist = [player1, player2]                    
+player3 = player('player3', 100, 80, 25, 25, [gs.fulldef1], [])
+playerlist = [player1, player2, player3]                    
 
 enemy1 = player('enemy1', 100, 50, 30, 10, [], [])
 enemy2 = player('enemy2', 100, 50, 30, 10, [], [])
@@ -66,15 +67,24 @@ while running == 0:
                             player.dmgheal(player.skills[sklinput]['dmg'])
                             print(player.name, 'healed for', player.skills[sklinput]['dmg'])
                         elif player.skills[sklinput]['type'] == 'dotdmg':
+                            # for when dps class does DOT damage to enemies
                             for enemy in enmatkl:
                                 print(str(enmatkl.index(enemy) + 1) + ':' + enemy.name)
                             enmatkind = int(input('choose an enemy to attack\n')) - 1
                             enmatkl[enmatkind].dotlist.append(player.skills[sklinput])
-                            print('player casted', player.skills[sklinput]['name'],
+                            print(player.name, 'casted', player.skills[sklinput]['name'],
                                   'on', enmatkl[enmatkind].name)
                         elif player.skills[sklinput]['type'] == 'dotheal':
+                            # for when healer class heals, but per turn
                             player.dotlist.append(player.skills[sklinput])
-                            print('player casted', player.skills[sklinput]['name'], 'on themselves')
+                            print(player.name, 'casted', player.skills[sklinput]['name'], 'on themselves')
+                        elif player.skills[sklinput]['type'] == 'alldefense':
+                            # for when tanker class casts his defense type on all party members
+                            for p in playerlist:
+                                if p.hp > 0:
+                                    p.dotlist.append(player.skills[sklinput])
+                                    p.dfs += player.skills[sklinput]['dmg']
+                            print(player.name, 'casted', player.skills[sklinput]['name'], 'on all party members')
                         playerrun = 1
                     else:
                         print('not enough mp, back to action list')
@@ -107,7 +117,13 @@ while running == 0:
                 attacklist.append(player)
         if enemy.hp > 0 and attacklist != []:
              targplyindex = random.randrange(0, len(attacklist))       # targets random player in playerlist
-             attacklist[targplyindex].dmgreceive(enemy.dmg - attacklist[targplyindex].dfs)   
+             enemydamage = enemy.dmg - attacklist[targplyindex].dfs
+             if enemydamage < 0:
+                    # sometimes player defense might fully mitigate enemy damage into negatives,
+                    # in which case it might actually heal players, which we don't want
+                    # so we set the damage to zero
+                    enemydamage = 0
+             attacklist[targplyindex].dmgreceive(enemydamage)   
     
     print('\n--------')
     # at the end of the turn, we deal all the damage over time skills (and heals) to players and enemies
@@ -120,10 +136,14 @@ while running == 0:
                     i['turns'] -= 1
                     if i['turns'] == 0:
                         player.dotlist.pop(player.dotlist.index(i))
-                if i['type'] == 'block':
+                elif i['type'] == 'block':
                     # if player blocks for the turn, then this returns their defense back to normal
                     # for the next turn
-                    player.dfs = int(player.dfs/2)
+                    player.dfs = player.maxdfs
+                    player.dotlist.pop(player.dotlist.index(i))
+                elif i['type'] == 'alldefense':
+                    # same concept as above
+                    player.dfs = player.maxdfs
                     player.dotlist.pop(player.dotlist.index(i))
                     
     for enemy in enemylist:
