@@ -7,7 +7,7 @@ from gameclass.playerclass import player
 
 player1 = player('player1', 100, 50, 30, 15, [gs.skill1, gs.dotdmg1], [])
 player2 = player('player2', 100, 80, 15, 10, [gs.heal1, gs.dotheal1], [])
-player3 = player('player3', 100, 80, 25, 25, [gs.fulldef1], [])
+player3 = player('player3', 100, 80, 25, 25, [gs.fulldfs1], [])
 playerlist = [player1, player2, player3]                    
 
 enemy1 = player('enemy1', 100, 50, 30, 10, [], [])
