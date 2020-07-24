@@ -8,7 +8,9 @@ class player:
         self.hp = hp                # two hp, this one's for taking damage
         self.maxmp = mp
         self.mp = mp                # same concept as hp
+        self.maxdmg = dmg
         self.dmg = dmg
+        self.maxdfs = dmg
         self.dfs = dfs              # player defense which mitigates damage
         self.skills = skills        # we'll use a list/dictionary to store skills
         self.dotlist = []
