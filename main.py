@@ -65,7 +65,6 @@ while running == 0:
                             enmatkl[enmatkind].dmgreceive(playerdamage)
                         elif player.skills[sklinput]['type'] == 'heal':
                             player.dmgheal(player.skills[sklinput]['dmg'])
-                            print(player.name, 'healed for', player.skills[sklinput]['dmg'])
                         elif player.skills[sklinput]['type'] == 'dotdmg':
                             # for when dps class does DOT damage to enemies
                             for enemy in enmatkl:
