@@ -1,6 +1,8 @@
 import random
 import math
 import gameclass.skills as gs
+import simplejson as json
+import os
 
 from gameclass.playerclass import player
 
@@ -200,6 +202,7 @@ while running == 0:
             enmatkl.append(enemy)
         if enmatkl == []:           # if there are no enemies to attack, players have won
             print('you won')
+            win = 'yes'
             break         
 
     for player in playerlist:
@@ -210,4 +213,21 @@ while running == 0:
     if zerohpplayers == len(playerlist):
         # set running to 1 which breaks the loop, when everyone in our party is dead
         running = 1
-        print('you lost')                       
+        print('you lost')
+        
+if win == 'yes':
+    # if we win, we gain 10 exp
+    if os.path.isfile("./exp.json") and os.stat("./exp.json").st_size != 0:
+        savefile = open("./exp.json", "r+")
+        expdata = json.loads(savefile.read())
+        expdata["exp"] = expdata["exp"] + 10
+        print("\ngained 10 exp, current exp is", expdata["exp"])
+    else:
+        # create a savefile for exp if it doesn't exist yet
+        savefile = open("./exp.json", "w+")
+        expdata = {"exp": 0}
+        expdata["exp"] = expdata["exp"] + 10
+        print("\ncurrent exp is", expdata["exp"])
+
+    savefile.seek(0)
+    savefile.write(json.dumps(expdata))
